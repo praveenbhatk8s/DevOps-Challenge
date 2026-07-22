@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devops-challenge
+  namespace: devops-challenge
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: devops-challenge
+  template:
+    metadata:
+      labels:
+        app: devops-challenge
+    spec:
+      containers:
+      - name: app
+        image: devops-challenge:local
+        imagePullPolicy: Never       # use local minikube image
+        ports:
+        - containerPort: 8000
+        envFrom:
+        - secretRef:
+            name: app-config         # all env vars from the Secret
+        resources:
+          requests:
+            cpu: "100m"              # required for HPA to work
+            memory: "128Mi"
+          limits:
+            cpu: "500m"
+            memory: "256Mi"
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8000
+          initialDelaySeconds: 10
+          periodSeconds: 30

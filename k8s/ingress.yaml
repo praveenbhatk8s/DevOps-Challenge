@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: devops-challenge
+  namespace: devops-challenge
+spec:
+  rules:
+  - host: devops-challenge.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: devops-challenge
+            port:
+              number: 80
