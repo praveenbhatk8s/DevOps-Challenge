@@ -16,15 +16,15 @@ spec:
       containers:
       - name: app
         image: devops-challenge:local
-        imagePullPolicy: Never       # use local minikube image
+        imagePullPolicy: Never
         ports:
         - containerPort: 8000
         envFrom:
         - secretRef:
-            name: app-config         # all env vars from the Secret
+            name: app-config
         resources:
           requests:
-            cpu: "100m"              # required for HPA to work
+            cpu: "100m"
             memory: "128Mi"
           limits:
             cpu: "500m"
