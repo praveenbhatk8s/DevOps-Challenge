@@ -1,2 +1,2 @@
-redis==4.6.0
+redis==5.0
 tornado==6.4
