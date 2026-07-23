@@ -43,23 +43,7 @@ AttributeError: module 'collections' has no attribute 'MutableMapping'
 **File:** [`Dockerfile`](Dockerfile)
 
 ```dockerfile
-FROM python:3.11-slim
-
-WORKDIR /app
-
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-COPY hello.py .
-COPY templates/ templates/
-COPY static/ static/
-
-RUN useradd -m appuser
-USER appuser
-
-EXPOSE 8000
-
-CMD ["python", "hello.py"]
+https://github.com/praveenbhatk8s/DevOps-Challenge/blob/master/Dockerfile
 ```
 
 **Decisions:**
@@ -135,22 +119,10 @@ spec:
 
 **File:** [`k8s/secret.yaml`](k8s/secret.yaml)
 
-All six environment variables the app reads (`ENVIRONMENT`, `HOST`, `PORT`, `REDIS_HOST`, `REDIS_PORT`, `REDIS_DB`) are stored in a Kubernetes `Secret`, not a `ConfigMap` or hardcoded in the Deployment spec.
+All six environment variables the app reads (`ENVIRONMENT`, `HOST`, `PORT`, `REDIS_HOST`, `REDIS_PORT`, `REDIS_DB`) are stored in a Kubernetes `Secret`.
 
 ```yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: app-config
-  namespace: devops-challenge
-type: Opaque
-stringData:
-  ENVIRONMENT: "PROD"
-  HOST: "0.0.0.0"
-  PORT: "8000"
-  REDIS_HOST: "redis"
-  REDIS_PORT: "6379"
-  REDIS_DB: "0"
+https://github.com/praveenbhatk8s/DevOps-Challenge/blob/master/k8s/secret.yaml
 ```
 
 The Deployment loads them via `envFrom`:
